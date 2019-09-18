@@ -1,0 +1,39 @@
+
+# 装饰器
+1. 装饰器本身由一个闭包构成，形参为被装饰的函数func
+格式：
+# 装饰器外函数的形参为一个函数，接收被装饰函数
+def decorator(func)：
+
+	# 将被装饰函数的特殊属性__name__改为其本身，而非wrapper
+	@functools.wraps(func)
+	
+	# 内函数的形参定义为 *args, **kwargs 这样方便内函数接收被装饰函数的所有形参
+	def wrapper(*args, **kwargs):
+		# 执行需要修饰的内容
+		return func(*args, **kwargs)
+	return wrapper
+
+@decorator		# 相当于 func = decorator(func)
+# 被装饰的函数
+def func():
+	# ...
+	return ...
+
+2. 执行流程
+
+* 将func作为实参传入decorator
+func = decorator(func)
+* decorator(func)返回的就是wrapper
+* 最后执行wrapper 执行修饰内容后，再执行原函数
+
+ps: 在wrapper中，可以做一些判断，比如如果满足某些条件，则执行...，否则执行原函数
+
+
+3. 意义
+对于某个函数，我们希望在不改变函数代码的前提下，为该函数增加额外的功能。
+
+
+
+
+
